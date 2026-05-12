@@ -1,0 +1,2 @@
+model,test_accuracy,test_macro_f1,best_epoch
+text_rnn,0.1625,0.09666647012023082,9

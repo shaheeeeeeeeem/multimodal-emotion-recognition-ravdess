@@ -1,0 +1,29 @@
+﻿.venv/
+.venv312/
+__pycache__/
+*.pyc
+
+# Raw and generated datasets are too large or reproducible from scripts.
+data/raw/**
+data/interim/**
+data/processed/**
+data/transcripts/**
+
+# Heavy model weights and external model caches.
+outputs/models/**
+outputs/huggingface_cache/**
+outputs/whisper_cache/**
+
+# Keep lightweight result artifacts for review.
+!outputs/metrics/
+!outputs/metrics/**
+!outputs/plots/
+!outputs/plots/**
+
+# Keep empty data folders visible.
+!data/raw/.gitkeep
+!data/raw/ravdess/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+!data/transcripts/.gitkeep
+!outputs/models/.gitkeep

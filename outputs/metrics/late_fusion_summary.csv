@@ -1,0 +1,5 @@
+model,test_accuracy,test_macro_f1
+late_fusion_average,0.39166666666666666,0.35295814775238393
+late_fusion_weighted_70_audio_30_text,0.3875,0.34548096490856806
+late_fusion_weighted_85_audio_15_text,0.38333333333333336,0.3423983082862945
+late_fusion_max_confidence,0.38333333333333336,0.3423983082862945

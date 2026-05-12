@@ -1,0 +1,2 @@
+model,test_accuracy,test_macro_f1,best_epoch
+audio_cnn_noise_augmented,0.4666666666666667,0.43099656990553714,11

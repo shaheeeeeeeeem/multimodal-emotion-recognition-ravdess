@@ -1,0 +1,4 @@
+model,test_accuracy,test_macro_f1,test_accuracy_percent,test_macro_f1_percent
+audio_cnn,0.3833333333333333,0.3423983082862945,38.33,34.24
+text_rnn,0.1625,0.0966664701202308,16.25,9.67
+late_fusion_average,0.3916666666666666,0.3529581477523839,39.17,35.3

@@ -1,0 +1,11 @@
+{
+  "sample_rate": 22050,
+  "duration_seconds": 3.5,
+  "n_mels": 128,
+  "n_fft": 2048,
+  "hop_length": 512,
+  "trim_top_db": 30,
+  "test_size": 0.15,
+  "validation_size": 0.15,
+  "random_state": 42
+}

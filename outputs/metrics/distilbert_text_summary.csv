@@ -1,0 +1,2 @@
+model,test_accuracy,test_macro_f1,best_epoch
+distilbert_text,0.175,0.08014299297194033,6
