@@ -1,0 +1,9 @@
+model,architecture,specaugment,test_accuracy,test_macro_f1,best_epoch,file
+audio_cnn_v2_enhanced_specaugment,enhanced,True,0.6166666666666667,0.6130240282277175,11,audio_cnn_v2_enhanced_specaugment_summary.csv
+audio_cnn_v2_enhanced_specaugment_seed123,enhanced,True,0.5833333333333334,0.5731544284368357,14,audio_cnn_v2_enhanced_specaugment_seed123_summary.csv
+audio_cnn_v2_spec_medium2,enhanced,True,0.5791666666666667,0.5602524748165447,15,audio_cnn_v2_spec_medium2_summary.csv
+audio_cnn_v2_enhanced_specaugment_seed7,enhanced,True,0.5708333333333333,0.5507510537171554,24,audio_cnn_v2_enhanced_specaugment_seed7_summary.csv
+audio_cnn_v2_spec_light,enhanced,True,0.5166666666666667,0.4850245879192354,11,audio_cnn_v2_spec_light_summary.csv
+audio_cnn_v2_enhanced,enhanced,False,0.5208333333333334,0.4775595576113134,6,audio_cnn_v2_enhanced_summary.csv
+audio_cnn_noise_augmented,,,0.4666666666666667,0.4309965699055371,11,audio_cnn_noise_augmented_summary.csv
+audio_cnn,,,0.4666666666666667,0.4309965699055371,11,audio_cnn_summary.csv

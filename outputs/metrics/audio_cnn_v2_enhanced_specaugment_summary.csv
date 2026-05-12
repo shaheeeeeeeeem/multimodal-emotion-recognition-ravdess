@@ -1,0 +1,2 @@
+model,architecture,specaugment,test_accuracy,test_macro_f1,best_epoch
+audio_cnn_v2_enhanced_specaugment,enhanced,True,0.6166666666666667,0.6130240282277175,11
