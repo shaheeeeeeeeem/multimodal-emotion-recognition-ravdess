@@ -1,4 +1,4 @@
-﻿# Multimodal Emotion Recognition on RAVDESS
+# Multimodal Emotion Recognition on RAVDESS
 
 This repository implements a multimodal emotion-recognition pipeline for the RAVDESS Emotional Speech dataset. The project classifies one of 8 emotions using:
 
@@ -6,7 +6,7 @@ This repository implements a multimodal emotion-recognition pipeline for the RAV
 - Whisper-generated transcripts with GRU and DistilBERT text models
 - Late-fusion probability averaging across audio and text branches
 
-The best result came from the bonus experiment: noise-augmented audio CNN fused with DistilBERT text probabilities.
+The best result came from the improved audio branch: an enhanced CNN trained on noise-augmented Mel-spectrograms with SpecAugment.
 
 ## Results
 
@@ -17,7 +17,8 @@ The best result came from the bonus experiment: noise-augmented audio CNN fused 
 | Late Fusion Average | 39.17 | 35.30 | Baseline audio + text probability averaging |
 | Audio CNN + Noise Augmentation | 46.67 | 43.10 | Bonus augmentation experiment |
 | DistilBERT Text Branch | 17.50 | 8.01 | Bonus transformer text branch |
-| Augmented Audio + DistilBERT Fusion | 47.92 | 44.38 | Best overall result |
+| Augmented Audio + DistilBERT Fusion | 47.92 | 44.38 | Best fusion result before enhanced CNN |
+| Enhanced Audio CNN + Noise + SpecAugment | 61.67 | 61.30 | Best overall result |
 
 ## Why Accuracy Is Not Extremely High
 
@@ -105,6 +106,12 @@ The training audio set is augmented with background noise while validation and t
 
 The augmentation script also supports optional pitch shifting with `--include-pitch`, but the completed bonus result used background-noise augmentation.
 
+### Enhanced Audio CNN
+
+The strongest run uses a deeper CNN than the baseline audio model. It adds two convolution layers per block, SiLU activations, both average and max pooled bottleneck features, AdamW optimization, label smoothing, and SpecAugment masks during training.
+
+SpecAugment randomly hides small time or frequency regions of a training spectrogram. This forces the model to learn broader emotional cues instead of memorizing one narrow part of a clip.
+
 ### Late Fusion
 
 Late fusion combines softmax probability outputs from separately trained models. Tested strategies include:
@@ -113,7 +120,7 @@ Late fusion combines softmax probability outputs from separately trained models.
 - Weighted average probabilities
 - Maximum confidence rule
 
-Best result: averaging noise-augmented audio CNN probabilities with DistilBERT probabilities.
+Best fusion result before the enhanced audio experiment: averaging noise-augmented audio CNN probabilities with DistilBERT probabilities.
 
 ## How To Run
 
@@ -176,6 +183,11 @@ Run the DistilBERT bonus branch:
 python src/training/train_distilbert_text.py
 ```
 
+Run the best enhanced audio CNN experiment:
+
+```powershell
+python src/training/train_audio_cnn_v2.py --data-dir data/processed/audio_noise_augmented --run-name audio_cnn_v2_enhanced_specaugment --architecture enhanced --epochs 80 --batch-size 32 --patience 14 --learning-rate 0.0007 --label-smoothing 0.04 --specaugment --freq-masks 1 --time-masks 1 --max-freq-width 10 --max-time-width 14
+```
 ## Report
 
 See the full technical report here:
@@ -183,3 +195,4 @@ See the full technical report here:
 [reports/technical_report.md](reports/technical_report.md)
 
 It includes architecture diagrams, training curves, confusion matrices, dataset challenges, and result analysis.
+

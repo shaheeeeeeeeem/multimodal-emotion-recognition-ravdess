@@ -1,4 +1,8 @@
 model,test_accuracy,test_macro_f1,test_accuracy_percent,test_macro_f1_percent
-audio_cnn,0.3833333333333333,0.3423983082862945,38.33,34.24
-text_rnn,0.1625,0.0966664701202308,16.25,9.67
-late_fusion_average,0.3916666666666666,0.3529581477523839,39.17,35.3
+audio_cnn_baseline,0.3833,0.3424,38.33,34.24
+text_rnn,0.1625,0.0967,16.25,9.67
+late_fusion_average,0.3917,0.3530,39.17,35.30
+audio_cnn_noise_augmented,0.4667,0.4310,46.67,43.10
+distilbert_text,0.1750,0.0801,17.50,8.01
+augmented_audio_distilbert_fusion,0.4792,0.4438,47.92,44.38
+enhanced_audio_cnn_specaugment,0.6167,0.6130,61.67,61.30

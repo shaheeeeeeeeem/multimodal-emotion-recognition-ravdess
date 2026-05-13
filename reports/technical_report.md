@@ -1,4 +1,4 @@
-﻿# Multimodal Emotion Recognition on RAVDESS
+# Multimodal Emotion Recognition on RAVDESS
 
 ## 1. Objective
 
@@ -7,7 +7,7 @@ The goal of this project is to classify human emotion from speech using two moda
 1. **Audio**: raw `.wav` files are converted into Mel-spectrograms and classified using a CNN.
 2. **Text**: speech is transcribed using Whisper, converted into token sequences, and classified using a GRU-based RNN.
 
-The final system compares unimodal models against a late-fusion multimodal model.
+The final system compares unimodal models, late-fusion multimodal models, and a final improved audio-only CNN.
 
 ## 2. Dataset
 
@@ -193,9 +193,12 @@ Late fusion was chosen because the text model is much weaker than the audio mode
 
 | Model | Accuracy (%) | Macro F1 (%) |
 |---|---:|---:|
-| audio_cnn | 38.33 | 34.24 |
+| audio_cnn_baseline | 38.33 | 34.24 |
 | text_rnn | 16.25 | 9.67 |
 | late_fusion_average | 39.17 | 35.30 |
+| audio_cnn_noise_augmented | 46.67 | 43.10 |
+| augmented_audio_distilbert_fusion | 47.92 | 44.38 |
+| enhanced_audio_cnn_specaugment | 61.67 | 61.30 |
 
 ### Late Fusion Comparison
 
@@ -244,11 +247,11 @@ Late fusion slightly improved performance over the audio-only model. The improve
 
 ## 8. Conclusion
 
-The best-performing model was late fusion with average probabilities:
+The best-performing model after the final improvement pass was the enhanced audio CNN trained with noise augmentation and SpecAugment:
 
 ```text
-Accuracy: 39.17%
-Macro F1: 35.30%
+Accuracy: 61.67%
+Macro F1: 61.30%
 ```
 
 The project demonstrates a complete multimodal emotion-recognition pipeline:
@@ -266,7 +269,7 @@ The main conclusion is that audio is the dominant modality for this dataset. Tex
 
 Future work could improve performance by:
 
-- using data augmentation such as pitch shifting, time stretching, and noise injection
+- expanding augmentation beyond noise and SpecAugment, such as pitch shifting and time stretching
 - trying stronger CNN architectures or transfer learning from audio models
 - using MFCCs or additional prosodic features alongside Mel-spectrograms
 - tuning hyperparameters more carefully
@@ -285,6 +288,8 @@ Important scripts:
 | Generate transcripts | `src/features/generate_transcripts.py` |
 | Build text features | `src/features/build_text_features.py` |
 | Train Audio CNN | `src/training/train_audio_cnn.py` |
+| Train Enhanced Audio CNN | `src/training/train_audio_cnn_v2.py` |
+| Enhanced CNN model definition | `src/models/enhanced_audio_cnn.py` |
 | Train Text RNN | `src/training/train_text_rnn.py` |
 | Run late fusion | `src/fusion/late_fusion.py` |
 | Build result table | `src/evaluation/build_results_table.py` |
@@ -333,4 +338,30 @@ The best bonus result came from averaging the probability outputs of the noise-a
 |---|---:|---:|
 | Augmented audio + DistilBERT average fusion | 47.92 | 44.38 |
 
-This is the best result in the project. The improvement mostly comes from audio augmentation, not from text semantics.
+This was the best fusion result before the enhanced audio experiment. The improvement mostly comes from audio augmentation, not from text semantics.
+
+## 12. Final Accuracy Improvement
+
+After the first submission, an additional audio-focused improvement pass was completed. This was feasible because the text branch was clearly limited by the RAVDESS transcripts, while the audio branch still had room to improve.
+
+The best final model was an enhanced audio CNN trained on the noise-augmented audio features with SpecAugment. Compared with the baseline CNN, it uses a deeper convolution stack, two convolution layers per block, SiLU activations, AdamW optimization, label smoothing, and a bottleneck feature vector built from both global average pooling and global max pooling.
+
+SpecAugment was applied only during training. It randomly masks small frequency bands and time ranges in the Mel-spectrogram so the model cannot depend on one narrow cue. This is similar in spirit to making the model practice with slightly incomplete spectrograms, which improves generalization.
+
+| Model | Accuracy (%) | Macro F1 (%) |
+|---|---:|---:|
+| Original Audio CNN | 38.33 | 34.24 |
+| Audio CNN + noise augmentation | 46.67 | 43.10 |
+| Augmented audio + DistilBERT fusion | 47.92 | 44.38 |
+| Enhanced Audio CNN + noise + SpecAugment | 61.67 | 61.30 |
+
+Enhanced Audio CNN training curves:
+
+![Enhanced Audio CNN training curves](../outputs/plots/audio_cnn_v2_enhanced_specaugment_training_curves.png)
+
+Enhanced Audio CNN confusion matrix:
+
+![Enhanced Audio CNN confusion matrix](../outputs/plots/audio_cnn_v2_enhanced_specaugment_confusion_matrix.png)
+
+This final result changes the main takeaway slightly: multimodal fusion was implemented and evaluated successfully, but for this dataset the strongest practical model is audio-only. The text modality remains useful for demonstrating the multimodal pipeline, yet it does not add enough information to beat a stronger audio model.
+
